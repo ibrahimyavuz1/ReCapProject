@@ -9,5 +9,9 @@ namespace Business.Abstact
     {
         List<Car> GetAll();
         List<Car> GetAllById(int id );
+        List<Car> GetCarsByBrandId(int id);
+        List<Car> GetCarsByColorId(int id);
+        void AddCar(Car car);
+
     }
 }
