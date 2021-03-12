@@ -2,6 +2,7 @@
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,20 +21,20 @@ namespace Business.Concrete
 
         public void AddCar(Car car)
         {
-            if (car.Description.Length > 2 && car.DailyPrice > 0)
+            if (car.CarName.Length > 2 && car.DailyPrice > 0)
             {
                 _carDal.Add(car);
                 Console.WriteLine("The car was addded successfully.");
             }
             else
             {
-                if (car.Description.Length <= 2 && car.DailyPrice <= 0)
+                if (car.CarName.Length <= 2 && car.DailyPrice <= 0)
                 {
-                    Console.WriteLine("The car was not addded.Check your Description and DailyPrice of the car!");
+                    Console.WriteLine("The car was not addded.Check your CarName and DailyPrice of the car!");
                 }
-                else if(car.Description.Length <= 2)
+                else if(car.CarName.Length <= 2)
                 {
-                    Console.WriteLine("The car was not addded.Check your Description of the car!");
+                    Console.WriteLine("The car was not addded.Check your CarName of the car!");
                 }
                 else
                 {
@@ -42,14 +43,25 @@ namespace Business.Concrete
             }
         }
 
+        public void DeleteCar(Car car)
+        {
+            //Bussiness Codes...
+            _carDal.Delete(car);
+        }
+
         public List<Car> GetAll()
         {
            return _carDal.GetAll();
         }
 
-        public List<Car> GetAllById(int id )
+        public Car GetById(int id )
         {
-            return _carDal.GetAll(p=>p.Id==id).ToList();
+            return _carDal.Get(p=>p.Id==id);
+        }
+
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
         }
 
         public List<Car> GetCarsByBrandId(int id)
@@ -60,6 +72,12 @@ namespace Business.Concrete
         public List<Car> GetCarsByColorId(int id)
         {
             return _carDal.GetAll(p => p.ColorId == id).ToList();
+        }
+
+        public void UpdateCar(Car car)
+        {
+            //Bussiness Codes
+            _carDal.Update(car);
         }
     }
 }
