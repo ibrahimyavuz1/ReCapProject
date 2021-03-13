@@ -6,6 +6,8 @@ using Entities.Concrete;
 using System;
 using DataAccess.Concrete.EntityFramework;
 using Entities.DTOs;
+using Core.Utilities.Results;
+using System.Collections.Generic;
 
 namespace ConsoleUI
 {
@@ -20,40 +22,19 @@ namespace ConsoleUI
         private static void CarTest()
         {
             ICarService carmanager = new CarManager(new EfCarDal());
-            foreach (Car car in carmanager.GetAll())
+            IDataResult<List<CarDetailDto>> result = carmanager.GetCarDetails();
+            if (result.IsSuccess == true)
             {
-                Console.WriteLine("BrandId: " + car.BrandId + " ColorId: " + car.ColorId + " CarName " + car.CarName);
+                foreach (CarDetailDto carDetailDto in result.Data)
+                {
+                    Console.WriteLine("Car Name: " + carDetailDto.CarName + ", Brand Name: " + carDetailDto.BrandName + ", Color Name: " + carDetailDto.ColorName + ", Daily Price: " + carDetailDto.DailyPrice);
+                }
             }
-            Console.WriteLine("****************************************************");
-            Console.WriteLine("BrandId:2***");
-            foreach (Car car in carmanager.GetCarsByBrandId(2))
+            else
             {
-                Console.WriteLine(" BrandId: " + car.BrandId + " ColorId: " + car.ColorId + " CarName " + car.CarName);
+                Console.WriteLine(result.Message);
             }
-            Console.WriteLine("****************************************************");
-            Console.WriteLine("ColorId:3");
-            foreach (Car car in carmanager.GetCarsByColorId(3))
-            {
-                Console.WriteLine(" BrandId: " + car.BrandId + " ColorId: " + car.ColorId + " CarName " + car.CarName);
-            }
-            carmanager.UpdateCar(new Car()
-            {
-                BrandId = 6,
-                ColorId = 7,
-                DailyPrice = 17,
-                CarName = "exp",
-                Id = 9,
-                ModelYear = 2020
-            });
-            foreach (Car car in carmanager.GetAll())
-            {
-                Console.WriteLine("BrandId: " + car.BrandId + " ColorId: " + car.ColorId + " CarName " + car.CarName + " DailyPrice: " + car.DailyPrice);
-            }
-            Console.WriteLine("****************************************************");
-            foreach (CarDetailDto carDetailDto  in carmanager.GetCarDetails())
-            {
-                Console.WriteLine("Car Name: " + carDetailDto.CarName + ", Brand Name: " + carDetailDto.BrandName + ", Color Name: " + carDetailDto.ColorName + ", Daily Price: " + carDetailDto.DailyPrice);
-            }
+            
         }
     }
 }
