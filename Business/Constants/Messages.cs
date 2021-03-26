@@ -12,6 +12,6 @@ namespace Business.Constants
         public static string CarListed = " The car was listed succesfully!";
         public static string CarDeleted = " The car was deleted succesfully!";
         public static string CarUpdated = " The car was updated succesfully!";
-
+        public static string NumberOfCarImageLimitExceed = "Limit number of car images exceeded!";
     }
 }
